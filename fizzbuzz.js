@@ -1,8 +1,11 @@
 var readline = require('readline-sync');
 // This is our main function
 function fizzbuzz() {
-    console.log("Hello, please enter some input: ");
+    console.log("Please enter max number:");
+    const maxNum = readline.prompt();
+    console.log("Hello, please enter which rules to implement (which combination of 3, 5, 7, 11, 13, 17)  - input as comma separated and in ascending order");
     const response = readline.prompt();
+    var rules = JSON.parse("[" + response + "]");
 
     let codes = {
         3: "Fizz",
@@ -12,24 +15,38 @@ function fizzbuzz() {
         13: "Fezz"
     }
     // Put your code here...
-    for (let i = 0; i < response; i++) {
+    for (let i = 0; i < +maxNum + 1; i++) {
         let toPrint = "";
         let special = false;
 
-        //checking if need to reverse the order
-        if(i % 17 == 0){
-            for (const [key, value] of Object.entries(codes).reverse()) {
-                if (i%key == 0){
-                 toPrint += value;
-                 special = true;
+        if (rules[rules.length - 1] == 17 ){
+            //checking if need to reverse the order
+            if(i % 17 == 0){
+                for (let index = rules.length - 2; index > -1; index--) {
+                    const key = rules[index];
+                    if (i%key == 0){
+                     toPrint += codes[key];
+                     special = true;
+                    }
+                }
+            }
+            //normal order and 17 is the last element
+            else{
+                for (let index = 0; index < rules.length - 1; index++) {
+                    const key = rules[index];
+                    if (i%key == 0){
+                     toPrint += codes[key];
+                     special = true;
+                    }
                 }
             }
         }
         else{
             //normal order
-            for (const [key, value] of Object.entries(codes)) {
+            for (let index = 0; index < rules.length; index++) {
+                const key = rules[index];
                 if (i%key == 0){
-                 toPrint += value;
+                 toPrint += codes[key];
                  special = true;
                 }
             }
